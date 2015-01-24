@@ -40,12 +40,13 @@ function eo()
   #funky version of the extremal optimization algorithm
 end
 
-function propagation_step(graph, eo_matching)
+function propagation(graph, eo_matching)
   prop = [] #do the propagation step
 end
 
 turb_g = read_edgelist("turb.edgelist")
 word_g = read_edgelist("words.edgelist")
 show(highdeg_nodes(turb_g))
+println()
 println()
 show(highdeg_nodes(word_g))
