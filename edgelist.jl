@@ -1,4 +1,5 @@
 using Graphs
+using Base.Collections
 
 function read_edgelist(fname)
   max_vnum = -1
@@ -25,15 +26,13 @@ function read_edgelist(fname)
   g
 end
 
-function highdeg_nodes(graph)
-  res = Int64[]
+function highdeg_nodes(graph, num_vertices=50)
+  res = PriorityQueue{Int64, Int64}(Base.Order.Reverse)
   for vertex in vertices(graph)
     deg = in_degree(vertex, graph)
-    if deg > 250
-      push!(res, vertex)
-    end
+    enqueue!(res, vertex, deg)
   end
-  res
+  [dequeue!(res) for i=1:num_vertices]
 end
 
 function eo()
@@ -47,4 +46,4 @@ end
 
 g = read_edgelist("turb.edgelist")
 #show(highdeg_nodes(g))
-println(length(highdeg_nodes(g)))
+println(highdeg_nodes(g))
