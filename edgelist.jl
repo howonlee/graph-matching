@@ -44,6 +44,8 @@ function propagation_step(graph, eo_matching)
   prop = [] #do the propagation step
 end
 
-g = read_edgelist("turb.edgelist")
-#show(highdeg_nodes(g))
-println(highdeg_nodes(g))
+turb_g = read_edgelist("turb.edgelist")
+word_g = read_edgelist("words.edgelist")
+show(highdeg_nodes(turb_g))
+println()
+show(highdeg_nodes(word_g))
