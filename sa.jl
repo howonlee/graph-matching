@@ -14,7 +14,7 @@ function sa(cost, #cost fn
   best_cost = cost(s0)
   for i in 1:iterations
     if i % 100 == 0
-      show(i)
+      println(i)
     end
     t = temperature(i)
     s_n = neighbor(s)
