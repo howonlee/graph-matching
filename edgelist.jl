@@ -18,7 +18,22 @@ function read_edgelist(fname)
       edges = push!(edges, Edge{Int}(i, parseint(first), parseint(second)))
     end
   end
-  g = simple_edgelist(max_vnum,edges)
+  g = simple_graph(max_vnum, is_directed=false)
+  for edge in edges
+    add_edge!(g, edge)
+  end
+  g
+end
+
+function highdeg_nodes(graph)
+  res = Int64[]
+  for vertex in vertices(graph)
+    deg = in_degree(vertex, graph)
+    if deg > 250
+      push!(res, vertex)
+    end
+  end
+  res
 end
 
 function list_eo_cands(graph)
@@ -36,4 +51,5 @@ function propagation_step(graph, eo_matching)
 end
 
 g = read_edgelist("turb.edgelist")
-show(g)
+#show(highdeg_nodes(g))
+println(length(highdeg_nodes(g)))
