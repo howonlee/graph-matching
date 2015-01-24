@@ -36,11 +36,6 @@ function highdeg_nodes(graph)
   res
 end
 
-function list_eo_cands(graph)
-  cands = []
-  cands
-end
-
 function eo()
   nothing
   #funky version of the extremal optimization algorithm
