@@ -2,6 +2,8 @@
 ### the reason: f-- impossible to install graph-tool on anaconda
 from graph_tool.all import *
 
+def read_edgelist(fname="
+
 if __name__ == "__main__":
     #what is the smallest step that you could take?
     g = Graph()
