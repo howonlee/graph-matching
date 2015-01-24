@@ -35,10 +35,23 @@ function highdeg_nodes(graph, num_vertices=50)
   [dequeue!(res) for i=1:num_vertices]
 end
 
-function eo()
-  nothing
-  #funky version of the extremal optimization algorithm
+function sa(iterations=10000, keep_best=true)
+  #SA just for the graph matching problem
+  function log_temp(i)
+    1 / log(i)
+  end
+  
+  function neighbor(state)
+    nothing
+  end
+
+  function cost(state)
+    nothing
+  end
+
+  s0 = 0 #something
 end
+
 
 function propagation(graph, eo_matching)
   prop = [] #do the propagation step
