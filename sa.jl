@@ -1,5 +1,4 @@
-# test out extremal optimization just in julia
-# with... graph matching, I guess
+# test out sa optimization just in julia
 using Distributions
 
 function sa(cost, #cost fn
