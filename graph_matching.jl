@@ -63,6 +63,9 @@ end
   
 const theta = 0.5
 
+function propagation_step(aux_graph, tgt_graph, curr_map)
+end
+
 #=
 function propagation_step(lgraph, rgraph, mapping)
   scores = [][]
@@ -88,6 +91,8 @@ function propagation_step(lgraph, rgraph, mapping)
 end
 
 function matchScores(lgraph, rgraph, mapping, lnode)
+  #this will have to be adjusted in the new publication
+  #to be cosine scores, not eccentricity
   scores = [0 for rnode in rgraph.nodes]
   for (lnbr, lnode) in edges(lgraph)
     if lnbr not in mapping
@@ -116,10 +121,6 @@ function matchScores(lgraph, rgraph, mapping, lnode)
   end
 
   scores
-end
-  
-function eccentricity(items)
-  ((max(items) - max2(items)) / std_dev(items))
 end
 =#
 
