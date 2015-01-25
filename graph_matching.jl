@@ -1,5 +1,7 @@
-#from the kaggle winning graph matching folks
+#from the kaggle winning graph matching folks:
 #http://arxiv.org/pdf/1102.4374v1.pdf
+#pseudocode copied from here, some of it:
+#http://randomwalker.info/social-networks/De_anonymization.html
 using Graphs
 using Base.Collections
 
@@ -59,31 +61,32 @@ function sa(iterations=10000, keep_best=true)
   s0 = 0 #something
 end
   
-function propagation_step(lgraph, rgraph, map)
+const theta = 0.5
+
+function propagation_step(lgraph, rgraph, mapping)
   for lnode in lgraph.nodes
     scores[lnode] = matchScores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
       continue
     end
-    rnode = (pick node from rgraph.nodes where 
-    scores[lnode][node] = max(scores[lnode]))
+    rnode = (argmax scores[lnode])
 
     scores[rnode] = matchScores(rgraph, lgraph, invert(mapping), rnode)
     if eccentricity(scores[rnode]) < theta
       continue
     end
-    reverse_match = (pick node from lgraph.nodes where 
-    scores[rnode][node] = max(scores[rnode]))
+    reverse_match = argmax scores[rnode]
     if reverse_match != lnode
       continue
     end
 
     mapping[lnode] = rnode
   end
+  mapping
 end
 
 function matchScores(lgraph, rgraph, mapping, lnode)
-  initialize scores = [0 for rnode in rgraph.nodes]
+  scores = [0 for rnode in rgraph.nodes]
   for (lnbr, lnode) in lgraph.edges
     if lnbr not in mapping
       continue
@@ -93,7 +96,7 @@ function matchScores(lgraph, rgraph, mapping, lnode)
       if rnode in mapping.image
         continue
       end
-      scores[rnode] += 1 / rnode.in_degree ^ 0.5
+      scores[rnode] += 1 / (rnode.in_degree ^ 0.5)
     end
   end
 
@@ -106,7 +109,7 @@ function matchScores(lgraph, rgraph, mapping, lnode)
       if rnode in mapping.image
         continue
       end
-      scores[rnode] += 1 / rnode.out_degree ^ 0.5
+      scores[rnode] += 1 / (rnode.out_degree ^ 0.5)
     end
   end
 
