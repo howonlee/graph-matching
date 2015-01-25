@@ -47,7 +47,7 @@ function sa(iterations=10000, keep_best=true)
   function log_temp(i)
     1 / log(i)
   end
-  
+
   function neighbor(state)
     nothing
   end
@@ -58,10 +58,70 @@ function sa(iterations=10000, keep_best=true)
 
   s0 = 0 #something
 end
+  
+function propagation_step(lgraph, rgraph, map)
+  for lnode in lgraph.nodes
+    scores[lnode] = matchScores(lgraph, rgraph, mapping, lnode)
+    if eccentricity(scores[lnode]) < theta
+      continue
+    end
+    rnode = (pick node from rgraph.nodes where 
+    scores[lnode][node] = max(scores[lnode]))
 
+    scores[rnode] = matchScores(rgraph, lgraph, invert(mapping), rnode)
+    if eccentricity(scores[rnode]) < theta
+      continue
+    end
+    reverse_match = (pick node from lgraph.nodes where 
+    scores[rnode][node] = max(scores[rnode]))
+    if reverse_match != lnode
+      continue
+    end
 
-function propagation(tgt_g, aux_g, seed_map)
-  tot_map
+    mapping[lnode] = rnode
+  end
+end
+
+function matchScores(lgraph, rgraph, mapping, lnode)
+  initialize scores = [0 for rnode in rgraph.nodes]
+  for (lnbr, lnode) in lgraph.edges
+    if lnbr not in mapping
+      continue
+    end
+    rnbr = mapping[lnbr]
+    for (rnbr, rnode) in rgraph.edges
+      if rnode in mapping.image
+        continue
+      end
+      scores[rnode] += 1 / rnode.in_degree ^ 0.5
+    end
+  end
+
+  for (lnode, lnbr) in lgraph.edges
+    if lnbr not in mapping
+      continue
+    end
+    rnbr = mapping[lnbr]
+    for (rnode, rnbr) in rgraph.edges
+      if rnode in mapping.image
+        continue
+      end
+      scores[rnode] += 1 / rnode.out_degree ^ 0.5
+    end
+  end
+
+  scores
+end
+  
+function eccentricity(items)
+  ((max(items) - max2(items)) / std_dev(items))
+end
+
+function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
+  for i in 1:num_iters
+    propagation_step(tgt_g, aux_g, seed_map) #must mutate seed_map
+  end
+  seed_map
 end
 
 turb_g = read_edgelist("turb.edgelist")
