@@ -59,14 +59,14 @@ function sa(iterations=10000, keep_best=true)
   end
 
   s0 = 0 #something
+  #=
+  SA GOES HERE ===
+  =#
+  seed_map
 end
   
 const theta = 0.5
 
-function propagation_step(aux_graph, tgt_graph, curr_map)
-end
-
-#=
 function propagation_step(lgraph, rgraph, mapping)
   scores = [][]
   for lnode in vertices(lgraph)
@@ -74,13 +74,13 @@ function propagation_step(lgraph, rgraph, mapping)
     if eccentricity(scores[lnode]) < theta
       continue
     end
-    rnode = (argmax scores[lnode])
+    rnode = indmax(scores[lnode])
 
     scores[rnode] = matchScores(rgraph, lgraph, invert(mapping), rnode)
     if eccentricity(scores[rnode]) < theta
       continue
     end
-    reverse_match = argmax scores[rnode]
+    reverse_match = indmax(scores[rnode])
     if reverse_match != lnode
       continue
     end
@@ -104,25 +104,12 @@ function matchScores(lgraph, rgraph, mapping, lnode)
         continue
       end
       scores[rnode] += 1 / (rnode.in_degree ^ 0.5)
-    end
-  end
-
-  for (lnode, lnbr) in edges(lgraph)
-    if lnbr not in mapping
-      continue
-    end
-    rnbr = mapping[lnbr]
-    for (rnode, rnbr) in edges(rgraph)
-      if rnode in mapping.image
-        continue
-      end
       scores[rnode] += 1 / (rnode.out_degree ^ 0.5)
     end
   end
 
   scores
 end
-=#
 
 function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
   for i in 1:num_iters
