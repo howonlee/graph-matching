@@ -43,22 +43,21 @@ function cosine_sim(first, second)
   #works on set, array, intset
   length(intersect(first, second)) / sqrt(length(first) * length(second))
 end
+  
+function log_temp(i)
+  1 / log(i)
+end
+
+function matching_neighbor(state)
+  nothing
+end
+
+function matching_cost(state)
+  nothing
+end
 
 function sa(iterations=10000, keep_best=true)
-  #SA just for the graph matching problem
-  function log_temp(i)
-    1 / log(i)
-  end
-
-  function neighbor(state)
-    nothing
-  end
-
-  function cost(state)
-    nothing
-  end
-
-  s0 = 0 #something
+  s0 = 0
   #=
   SA GOES HERE ===
   =#
