@@ -1,3 +1,5 @@
+#from the kaggle winning graph matching folks
+#http://arxiv.org/pdf/1102.4374v1.pdf
 using Graphs
 using Base.Collections
 
@@ -19,7 +21,7 @@ function read_edgelist(fname)
       edges = push!(edges, Edge{Int}(i, parseint(first), parseint(second)))
     end
   end
-  g = simple_graph(max_vnum, is_directed=false)
+  g = simple_graph(max_vnum) #work with directed graph
   for edge in edges
     add_edge!(g, edge)
   end
@@ -33,6 +35,11 @@ function highdeg_nodes(graph, num_vertices=50)
     enqueue!(res, vertex, deg)
   end
   [dequeue!(res) for i=1:num_vertices]
+end
+
+function cosine_sim(first, second)
+  #works on set, array, intset
+  length(intersect(first, second)) / sqrt(length(first) * length(second))
 end
 
 function sa(iterations=10000, keep_best=true)
@@ -53,8 +60,8 @@ function sa(iterations=10000, keep_best=true)
 end
 
 
-function propagation(graph, eo_matching)
-  prop = [] #do the propagation step
+function propagation(tgt_g, aux_g, seed_map)
+  tot_map
 end
 
 turb_g = read_edgelist("turb.edgelist")

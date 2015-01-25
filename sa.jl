@@ -1,4 +1,6 @@
 # test out sa optimization just in julia
+# taken from JM White
+# http://www.johnmyleswhite.com/notebook/2012/04/04/simulated-annealing-in-julia/
 using Distributions
 
 function sa(cost, #cost fn
