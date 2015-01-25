@@ -63,8 +63,10 @@ end
   
 const theta = 0.5
 
+#=
 function propagation_step(lgraph, rgraph, mapping)
-  for lnode in lgraph.nodes
+  scores = [][]
+  for lnode in vertices(lgraph)
     scores[lnode] = matchScores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
       continue
@@ -87,12 +89,12 @@ end
 
 function matchScores(lgraph, rgraph, mapping, lnode)
   scores = [0 for rnode in rgraph.nodes]
-  for (lnbr, lnode) in lgraph.edges
+  for (lnbr, lnode) in edges(lgraph)
     if lnbr not in mapping
       continue
     end
     rnbr = mapping[lnbr]
-    for (rnbr, rnode) in rgraph.edges
+    for (rnbr, rnode) in edges(rgraph)
       if rnode in mapping.image
         continue
       end
@@ -100,12 +102,12 @@ function matchScores(lgraph, rgraph, mapping, lnode)
     end
   end
 
-  for (lnode, lnbr) in lgraph.edges
+  for (lnode, lnbr) in edges(lgraph)
     if lnbr not in mapping
       continue
     end
     rnbr = mapping[lnbr]
-    for (rnode, rnbr) in rgraph.edges
+    for (rnode, rnbr) in edges(rgraph)
       if rnode in mapping.image
         continue
       end
@@ -119,6 +121,7 @@ end
 function eccentricity(items)
   ((max(items) - max2(items)) / std_dev(items))
 end
+=#
 
 function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
   for i in 1:num_iters
