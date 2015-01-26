@@ -51,20 +51,17 @@ function cosine_sim(first, second)
   length(intersect(first, second)) / sqrt(length(first) * length(second))
 end
   
-function log_temp(i)
-  1 / log(i)
-end
-
 function sa_neighbor(state)
-  nothing ########
+  nothing ######## switch the image
 end
 
 function sa_cost(state)
-  nothing #########
+  nothing ######### the pair cost stuff
 end
 
-function sa(iterations=10000, keep_best=true)
-  s0 = 0
+function sa(g1, g2, iterations=10000, keep_best=true)
+  temp = t -> (1 / t)
+  s0 = Dict() #arbitrary mapping between graph one and graph 2
   #=
   SA GOES HERE ===
   =#
@@ -97,8 +94,6 @@ function propagation_step(lgraph, rgraph, mapping)
 end
 
 function matchScores(lgraph, rgraph, mapping, lnode)
-  #this will have to be adjusted in the new publication
-  #to be cosine scores, not eccentricity
   scores = [0 for rnode in rgraph.nodes]
   for (lnbr, lnode) in edges(lgraph)
     if lnbr not in mapping
@@ -109,12 +104,17 @@ function matchScores(lgraph, rgraph, mapping, lnode)
       if rnode in mapping.image
         continue
       end
+      #the histogram is the same, but not the distribution
       scores[rnode] += 1 / (rnode.in_degree ^ 0.5)
       scores[rnode] += 1 / (rnode.out_degree ^ 0.5)
     end
   end
-
   scores
+end
+
+function eccentricity(items)
+  #use select!
+  return (max(items) - max2(items)) / std(items)
 end
 
 function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
@@ -126,8 +126,3 @@ end
 
 turb_g = read_edgelist("turb.edgelist")
 word_g = read_edgelist("words.edgelist")
-in_out_deg_comparison(word_g)
-#show(highdeg_nodes(turb_g))
-#println()
-#println()
-#show(highdeg_nodes(word_g))
