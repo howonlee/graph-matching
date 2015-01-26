@@ -39,6 +39,13 @@ function highdeg_nodes(graph, num_vertices=50)
   [dequeue!(res) for i=1:num_vertices]
 end
 
+function in_out_deg_comparison(graph)
+  ins = [in_degree(vertex, graph) for vertex in vertices(graph)]
+  outs = [out_degree(vertex, graph) for vertex in vertices(graph)]
+  println(hist(ins))
+  println(hist(outs))
+end
+
 function cosine_sim(first, second)
   #works on set, array, intset
   length(intersect(first, second)) / sqrt(length(first) * length(second))
@@ -48,12 +55,12 @@ function log_temp(i)
   1 / log(i)
 end
 
-function matching_neighbor(state)
-  nothing
+function sa_neighbor(state)
+  nothing ########
 end
 
-function matching_cost(state)
-  nothing
+function sa_cost(state)
+  nothing #########
 end
 
 function sa(iterations=10000, keep_best=true)
@@ -119,7 +126,8 @@ end
 
 turb_g = read_edgelist("turb.edgelist")
 word_g = read_edgelist("words.edgelist")
-show(highdeg_nodes(turb_g))
-println()
-println()
-show(highdeg_nodes(word_g))
+in_out_deg_comparison(word_g)
+#show(highdeg_nodes(turb_g))
+#println()
+#println()
+#show(highdeg_nodes(word_g))
