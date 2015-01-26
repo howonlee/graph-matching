@@ -52,16 +52,19 @@ function cosine_sim(first, second)
 end
   
 function sa_neighbor(state)
-  nothing ######## switch the image
+  nothing ######## switch the image of a random pair
 end
 
 function sa_cost(state)
   nothing ######### the pair cost stuff
 end
 
-function sa(g1, g2, iterations=10000, keep_best=true)
+function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
+  #currently terribly bad
   temp_fn = t -> (1 / t)
-  s0 = Dict() #arbitrary mapping between graph one and graph 2
+  s0 = Dict()
+  #arbitrary mapping between graph one and graph 2
+  #with the highest degree nodes
   score = sa_cost(s0)
   best_s = s0
   best_score = score
