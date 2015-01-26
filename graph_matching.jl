@@ -60,12 +60,36 @@ function sa_cost(state)
 end
 
 function sa(g1, g2, iterations=10000, keep_best=true)
-  temp = t -> (1 / t)
+  temp_fn = t -> (1 / t)
   s0 = Dict() #arbitrary mapping between graph one and graph 2
-  #=
-  SA GOES HERE ===
-  =#
-  seed_map
+  score = sa_cost(s0)
+  best_s = s0
+  best_score = score
+  for i in 1:iterations
+    if i % 1000 == 0
+      println(i)
+    end
+    t = temp_fn(i)
+    s_n = sa_neighbor(state)
+    y = cost(s)
+    y_n = cost(s_n)
+    if y_n <= y
+      s = s_n
+      y = y_n
+    else
+      p = exp(-((y_n - y) / t))
+      if rand() <= p
+        s = s_n
+        y = y_n
+      else
+        nothing
+      end
+    end
+    if y < best_cost
+      best_s = s
+      best_cost = y
+  end
+  keep_best ? best_s : s
 end
   
 const theta = 0.5
