@@ -52,7 +52,11 @@ function cosine_sim(first, second)
 end
   
 function sa_neighbor(state)
-  nothing ######## switch the image of a random pair
+  mutated_state = copy(state)
+  state_key = keys(mutated_state)
+  state1 = something something something ####
+  state2 = something something something ####
+  return mutated_state
 end
 
 function sa_cost(state)
@@ -60,11 +64,11 @@ function sa_cost(state)
 end
 
 function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
-  #currently terribly bad
+  #this should be symmetric
   temp_fn = t -> (1 / t)
-  s0 = Dict()
-  #arbitrary mapping between graph one and graph 2
-  #with the highest degree nodes
+  nodes1 = highdeg_nodes(g1)
+  nodes2 = highdeg_nodes(g2)
+  s0 = Dict(nodes1, nodes2)
   score = sa_cost(s0)
   best_s = s0
   best_score = score
@@ -97,6 +101,7 @@ end
   
 const theta = 0.5
 
+#=
 function propagation_step(lgraph, rgraph, mapping)
   scores = [][]
   for lnode in vertices(lgraph)
@@ -150,6 +155,8 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
   end
   seed_map
 end
+=#
 
 turb_g = read_edgelist("turb.edgelist")
 word_g = read_edgelist("words.edgelist")
+sa(turb_g, word_g)
