@@ -59,8 +59,21 @@ function sa_neighbor(state)
   return mutated_state
 end
 
+function pair_dist(x, y)
+  r = x > y ? (x / y) : (y / x)
+  sqrt(r - 1)
+end
+
 function sa_cost(state)
-  nothing ######### the pair cost stuff
+  g1_weights = []
+  g2_weights = []
+  for (node1, node2) in state
+    weight = get that cosine distance
+  end
+  g1_mean = mean(g1_weights)
+  g2_mean = mean(g2_weights)
+  ((g1_mean * g2_mean) ^ 0.25) * sum(pair dist stuff)
+  ####3 finish this business
 end
 
 function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
