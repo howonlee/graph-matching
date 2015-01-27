@@ -5,6 +5,8 @@
 using Graphs
 using Base.Collections
 
+const theta = 0.5
+
 function read_edgelist(fname)
   max_vnum = -1
   function cmp_vnum(str)
@@ -54,8 +56,8 @@ end
 function sa_neighbor(state)
   mutated_state = copy(state)
   state_key = keys(mutated_state)
-  state1 = something something something ####
-  state2 = something something something ####
+  #state1 = something something something ####
+  #state2 = something something something ####
   return mutated_state
 end
 
@@ -68,11 +70,12 @@ function sa_cost(state)
   g1_weights = []
   g2_weights = []
   for (node1, node2) in state
-    weight = get that cosine distance
+    nothing
+    #weight = get that cosine distance
   end
   g1_mean = mean(g1_weights)
   g2_mean = mean(g2_weights)
-  ((g1_mean * g2_mean) ^ 0.25) * sum(pair dist stuff)
+  ((g1_mean * g2_mean) ^ 0.25) * sum([0])
   ####3 finish this business
 end
 
@@ -108,12 +111,11 @@ function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
     if y < best_cost
       best_s = s
       best_cost = y
+    end
+    keep_best ? best_s : s
   end
-  keep_best ? best_s : s
 end
   
-const theta = 0.5
-
 #=
 function propagation_step(lgraph, rgraph, mapping)
   scores = [][]
@@ -170,6 +172,10 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
 end
 =#
 
-turb_g = read_edgelist("turb.edgelist")
-word_g = read_edgelist("words.edgelist")
-sa(turb_g, word_g)
+cos_test_1 = 1:8
+cos_test_2 = 4:9
+println(cosine_sim(cos_test_1, cos_test_2))
+
+#turb_g = read_edgelist("turb.edgelist")
+#word_g = read_edgelist("words.edgelist")
+#sa(turb_g, word_g)
