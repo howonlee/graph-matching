@@ -76,7 +76,10 @@ function pair_dist(x, y)
 end
 
 function pair_dist_test()
-  #######################
+  println("0.5, 10: ")
+  println(pair_dist(0.5, 10))
+  println("5, 0.1: ")
+  println(pair_dist(5, 0.1))
 end
 
 function sa_cost(state)
@@ -188,7 +191,6 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
   seed_map
 end
 =#
-
 
 #turb_g = read_edgelist("turb.edgelist")
 #word_g = read_edgelist("words.edgelist")
