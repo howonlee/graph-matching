@@ -49,8 +49,13 @@ function in_out_deg_comparison(graph)
 end
 
 function cosine_sim(first, second)
-  #works on set, array, intset
   length(intersect(first, second)) / sqrt(length(first) * length(second))
+end
+
+function cosine_sim_test()
+  cos_test_1 = 1:8
+  cos_test_2 = 4:9
+  println(cosine_sim(cos_test_1, cos_test_2))
 end
   
 function sa_neighbor(state)
@@ -61,9 +66,17 @@ function sa_neighbor(state)
   return mutated_state
 end
 
+function sa_neighbor_test()
+  #######################
+end
+
 function pair_dist(x, y)
   r = x > y ? (x / y) : (y / x)
   sqrt(r - 1)
+end
+
+function pair_dist_test()
+  #######################
 end
 
 function sa_cost(state)
@@ -77,6 +90,10 @@ function sa_cost(state)
   g2_mean = mean(g2_weights)
   ((g1_mean * g2_mean) ^ 0.25) * sum([0])
   ####3 finish this business
+end
+
+function sa_cost_test()
+  #######################
 end
 
 function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
@@ -172,9 +189,6 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
 end
 =#
 
-cos_test_1 = 1:8
-cos_test_2 = 4:9
-println(cosine_sim(cos_test_1, cos_test_2))
 
 #turb_g = read_edgelist("turb.edgelist")
 #word_g = read_edgelist("words.edgelist")
