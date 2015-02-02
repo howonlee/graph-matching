@@ -2,6 +2,7 @@
 #http://arxiv.org/pdf/1102.4374v1.pdf
 #pseudocode copied from here, some of it:
 #http://randomwalker.info/social-networks/De_anonymization.html
+
 using Graphs
 using Base.Collections
 
@@ -92,7 +93,7 @@ function sa_cost(state)
   g1_mean = mean(g1_weights)
   g2_mean = mean(g2_weights)
   ((g1_mean * g2_mean) ^ 0.25) * sum([0])
-  ####3 finish this business
+  #### not sum([0]), but sum(something)
 end
 
 function sa_cost_test()
@@ -104,16 +105,17 @@ function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
   temp_fn = t -> (1 / t)
   nodes1 = highdeg_nodes(g1)
   nodes2 = highdeg_nodes(g2)
-  s0 = Dict(nodes1, nodes2)
-  score = sa_cost(s0)
-  best_s = s0
+  c = -1 #something something something something
+  s = Dict(nodes1, nodes2) ###############
+  score = sa_cost(s)
+  best_s = s
   best_score = score
   for i in 1:iterations
     if i % 1000 == 0
       println(i)
     end
     t = temp_fn(i)
-    s_n = sa_neighbor(state)
+    s_n = sa_neighbor(s)
     y = cost(s)
     y_n = cost(s_n)
     if y_n <= y
@@ -192,6 +194,6 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
 end
 =#
 
-#turb_g = read_edgelist("turb.edgelist")
-#word_g = read_edgelist("words.edgelist")
-#sa(turb_g, word_g)
+turb_g = read_edgelist("turb.edgelist")
+word_g = read_edgelist("words.edgelist")
+sa(turb_g, word_g)
