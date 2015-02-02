@@ -54,8 +54,11 @@ function cosine_sim(first, second)
 end
 
 function cosine_sim_test()
-  cos_test_1 = 1:8
-  cos_test_2 = 4:9
+  cos_test_1 = [1,2,3,4,5,6,7,8,9]
+  cos_test_2 = [4,5,6,7,8,9,10,11,12]
+  #this should come out 2/3
+  println(cos_test_1)
+  println(cos_test_2)
   println(cosine_sim(cos_test_1, cos_test_2))
 end
   
@@ -194,6 +197,7 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
 end
 =#
 
-turb_g = read_edgelist("turb.edgelist")
-word_g = read_edgelist("words.edgelist")
-sa(turb_g, word_g)
+cosine_sim_test()
+#turb_g = read_edgelist("turb.edgelist")
+#word_g = read_edgelist("words.edgelist")
+#sa(turb_g, word_g)
