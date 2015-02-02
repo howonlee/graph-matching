@@ -63,15 +63,26 @@ function cosine_sim_test()
 end
   
 function sa_neighbor(state)
-  mutated_state = copy(state)
-  state_key = keys(mutated_state)
-  #state1 = something something something ####
-  #state2 = something something something ####
-  return mutated_state
+  ds = copy(state)
+  skeys = collect(keys(ds))
+  idx1 = rand(1:length(skeys))
+  idx2 = rand(1:length(skeys))
+  while idx1 == idx2
+    idx2 = rand(1:length(skeys))
+  end
+  temp = ds[skeys[idx1]]
+  ds[skeys[idx1]] = ds[skeys[idx2]]
+  ds[skeys[idx2]] = temp
+  return ds
 end
 
 function sa_neighbor_test()
-  #######################
+  nodes1 = [1,2,3,4,5,6,7]
+  nodes2 = ["a","b","c","d","e","f","g"]
+  mapping = Dict(nodes1, nodes2)
+  println(mapping)
+  neighbor = sa_neighbor(mapping)
+  println(neighbor)
 end
 
 function pair_dist(x, y)
@@ -100,7 +111,11 @@ function sa_cost(state)
 end
 
 function sa_cost_test()
-  #######################
+  nodes1 = something #with dummy node included I think
+  nodes2 = something #with dummy node included I think
+  state = Dict(1:8, 2:9)
+  cost = sa_cost(state)
+  println(cost)
 end
 
 function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
@@ -108,8 +123,8 @@ function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
   temp_fn = t -> (1 / t)
   nodes1 = highdeg_nodes(g1)
   nodes2 = highdeg_nodes(g2)
-  c = -1 #something something something something
-  s = Dict(nodes1, nodes2) ###############
+  c = length(g1) * 20
+  s = Dict(nodes1, nodes2)
   score = sa_cost(s)
   best_s = s
   best_score = score
@@ -197,7 +212,7 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
 end
 =#
 
-cosine_sim_test()
+sa_neighbor_test()
 #turb_g = read_edgelist("turb.edgelist")
 #word_g = read_edgelist("words.edgelist")
 #sa(turb_g, word_g)
