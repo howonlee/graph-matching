@@ -97,7 +97,7 @@ function pair_dist_test()
   println(pair_dist(5, 0.1))
 end
 
-function sa_cost(state)
+function sa_cost(state) #this has more than this
   g1_weights = []
   g2_weights = []
   for (node1, node2) in state
@@ -110,7 +110,9 @@ function sa_cost(state)
   #### not sum([0]), but sum(something)
 end
 
-function sa_cost_test()
+function sa_cost_test() #make the graphs here...
+  graph1 = something
+  graph2 = something
   nodes1 = something #with dummy node included I think
   nodes2 = something #with dummy node included I think
   state = Dict(1:8, 2:9)
