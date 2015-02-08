@@ -5,6 +5,7 @@
 
 using Graphs
 using Base.Collections
+using Base.Test
 
 const theta = 0.5
 
@@ -120,6 +121,37 @@ function sa_cost_test() #make the graphs here...
   println(cost)
 end
 
+function weight_matrix(graph)
+  #caveat: requires ergodic mat
+  mat = zeros(num_vertices(graph), num_vertices(graph))
+  for node1 in vertices(graph)
+    for node2 in vertices(graph)
+      mat[node1, node2] = cosine_sim(in_neighbors(node1, graph), in_neighbors(node2, graph))
+    end
+  end
+  mat
+end
+
+function weight_matrix_test()
+  test_graph = simple_graph(4)
+  #seems pretty much the case that this requires ergodic mat
+  add_edge!(test_graph, Edge{Int}(0,1,2))
+  add_edge!(test_graph, Edge{Int}(0,2,3))
+  add_edge!(test_graph, Edge{Int}(0,3,4))
+  add_edge!(test_graph, Edge{Int}(0,1,4))
+  add_edge!(test_graph, Edge{Int}(0,1,3))
+  add_edge!(test_graph, Edge{Int}(0,4,1))
+  cos_mat = weight_matrix(test_graph)
+  true_mat = [
+    [1,0,0,0],
+    [0,1,0.7071067811865475,0.7071067811865475],
+    [0,0.7071067811865475,1,0.5],
+    [0,0.7071067811865475,0.5,1]
+    ]
+  println(cos_mat)
+  @test_approx_eq cos_mat true_mat
+end
+
 function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
   #this should be symmetric
   temp_fn = t -> (1 / t)
@@ -214,7 +246,15 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
 end
 =#
 
-sa_neighbor_test()
+function test()
+  #weight_matrix_test()
+  #sa_neighbor_test()
+  #pair_distance_test()
+  sa_cost_test()
+end
+
+test()
+
 #turb_g = read_edgelist("turb.edgelist")
 #word_g = read_edgelist("words.edgelist")
 #sa(turb_g, word_g)
