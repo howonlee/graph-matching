@@ -98,9 +98,7 @@ function pair_dist_test()
   println(pair_dist(5, 0.1))
 end
 
-function sa_cost(state) #this has more than this
-  g1_weights = []
-  g2_weights = []
+function sa_cost(state, w_mat1, w_mat2) #this has more than this
   for (node1, node2) in state
     nothing
     #weight = get that cosine distance
