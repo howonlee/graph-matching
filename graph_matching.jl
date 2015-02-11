@@ -192,13 +192,13 @@ end
 function propagation_step(lgraph, rgraph, mapping)
   scores = [][]
   for lnode in vertices(lgraph)
-    scores[lnode] = matchScores(lgraph, rgraph, mapping, lnode)
+    scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
       continue
     end
     rnode = indmax(scores[lnode])
 
-    scores[rnode] = matchScores(rgraph, lgraph, invert(mapping), rnode)
+    scores[rnode] = match_scores(rgraph, lgraph, invert(mapping), rnode)
     if eccentricity(scores[rnode]) < theta
       continue
     end
@@ -212,7 +212,10 @@ function propagation_step(lgraph, rgraph, mapping)
   mapping
 end
 
-function matchScores(lgraph, rgraph, mapping, lnode)
+function propagation_step_test()
+end
+
+function match_scores(lgraph, rgraph, mapping, lnode)
   scores = [0 for rnode in rgraph.nodes]
   for (lnbr, lnode) in edges(lgraph)
     if lnbr not in mapping
@@ -229,6 +232,9 @@ function matchScores(lgraph, rgraph, mapping, lnode)
     end
   end
   scores
+end
+
+function match_scores_test()
 end
 
 function eccentricity(items)
