@@ -251,9 +251,9 @@ end
 =#
 
 function test()
-  #weight_matrix_test()
-  #sa_neighbor_test()
-  #pair_distance_test()
+  weight_matrix_test()
+  sa_neighbor_test()
+  pair_dist_test()
   sa_cost_test()
 end
 
