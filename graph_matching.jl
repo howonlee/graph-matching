@@ -62,62 +62,6 @@ function cosine_sim_test()
   println(cos_test_2)
   println(cosine_sim(cos_test_1, cos_test_2))
 end
-  
-function sa_neighbor(state)
-  ds = copy(state)
-  skeys = collect(keys(ds))
-  idx1 = rand(1:length(skeys))
-  idx2 = rand(1:length(skeys))
-  while idx1 == idx2
-    idx2 = rand(1:length(skeys))
-  end
-  temp = ds[skeys[idx1]]
-  ds[skeys[idx1]] = ds[skeys[idx2]]
-  ds[skeys[idx2]] = temp
-  return ds
-end
-
-function sa_neighbor_test()
-  nodes1 = [1,2,3,4,5,6,7]
-  nodes2 = ["a","b","c","d","e","f","g"]
-  mapping = Dict(nodes1, nodes2)
-  println(mapping)
-  neighbor = sa_neighbor(mapping)
-  println(neighbor)
-end
-
-function pair_dist(x, y)
-  r = x > y ? (x / y) : (y / x)
-  sqrt(r - 1)
-end
-
-function pair_dist_test()
-  println("0.5, 10: ")
-  println(pair_dist(0.5, 10))
-  println("5, 0.1: ")
-  println(pair_dist(5, 0.1))
-end
-
-function sa_cost(state, w_mat1, w_mat2) #this has more than this
-  for (node1, node2) in state
-    nothing
-    #weight = get that cosine distance
-  end
-  g1_mean = mean(g1_weights)
-  g2_mean = mean(g2_weights)
-  ((g1_mean * g2_mean) ^ 0.25) * sum([0])
-  #### not sum([0]), but sum(something)
-end
-
-function sa_cost_test() #make the graphs here...
-  graph1 = something
-  graph2 = something
-  nodes1 = something #with dummy node included I think
-  nodes2 = something #with dummy node included I think
-  state = Dict(1:8, 2:9)
-  cost = sa_cost(state)
-  println(cost)
-end
 
 function weight_matrix(graph)
   #caveat: requires ergodic mat
@@ -150,45 +94,6 @@ function weight_matrix_test()
   @test_approx_eq cos_mat true_mat
 end
 
-function sa(g1, g2, iterations=10000, num_nodes=50, keep_best=true)
-  #this should be symmetric
-  temp_fn = t -> (1 / t)
-  nodes1 = highdeg_nodes(g1)
-  nodes2 = highdeg_nodes(g2)
-  c = length(g1) * 20
-  s = Dict(nodes1, nodes2)
-  score = sa_cost(s)
-  best_s = s
-  best_score = score
-  for i in 1:iterations
-    if i % 1000 == 0
-      println(i)
-    end
-    t = temp_fn(i)
-    s_n = sa_neighbor(s)
-    y = cost(s)
-    y_n = cost(s_n)
-    if y_n <= y
-      s = s_n
-      y = y_n
-    else
-      p = exp(-((y_n - y) / t))
-      if rand() <= p
-        s = s_n
-        y = y_n
-      else
-        nothing
-      end
-    end
-    if y < best_cost
-      best_s = s
-      best_cost = y
-    end
-    keep_best ? best_s : s
-  end
-end
-  
-#=
 function propagation_step(lgraph, rgraph, mapping)
   scores = [][]
   for lnode in vertices(lgraph)
@@ -248,7 +153,6 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
   end
   seed_map
 end
-=#
 
 function test()
   weight_matrix_test()
