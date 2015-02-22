@@ -7,7 +7,7 @@ def circle(x, y):
 
 def pair_dist(x, y):
     #do it the num-pythonic way
-    r = np.where(x > y, x / y, y /x)
+    r = np.where(x > y, x / y, y / x)
     return np.sqrt(r - 1)
 
 if __name__ == "__main__":
