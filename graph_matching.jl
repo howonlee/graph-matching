@@ -121,6 +121,7 @@ function propagation_step_test()
 end
 
 function match_scores(lgraph, rgraph, mapping, lnode)
+  #this is not congruent with the pseudocode given
   scores = [0 for rnode in rgraph.nodes]
   for (lnbr, lnode) in edges(lgraph)
     if lnbr not in mapping
@@ -140,6 +141,11 @@ function match_scores(lgraph, rgraph, mapping, lnode)
 end
 
 function match_scores_test()
+  lgraph = 0 #graph with well-defined degree neighborhoods
+  rgraph = 0 #graph with shuffled but same degree neighborhood
+  mapping = {} #one-thing mapping
+  lnode = 0 #some node
+  @assert match_scores == something_else
 end
 
 function eccentricity(items)
@@ -155,7 +161,8 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
 end
 
 function test()
-  #propagation time
+  match_scores_test()
+  #propagation_step_test()
 end
 
 test()
