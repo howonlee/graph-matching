@@ -155,10 +155,7 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
 end
 
 function test()
-  weight_matrix_test()
-  sa_neighbor_test()
-  pair_dist_test()
-  sa_cost_test()
+  #propagation time
 end
 
 test()
