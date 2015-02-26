@@ -95,15 +95,18 @@ function weight_matrix_test()
 end
 
 function propagation_step(lgraph, rgraph, mapping)
-  scores = [][]
+  scores = (Int => Array{Float64})[]
   for lnode in vertices(lgraph)
     scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
       continue
     end
     rnode = indmax(scores[lnode])
-
-    scores[rnode] = match_scores(rgraph, lgraph, invert(mapping), rnode)
+    inverse_mapping = Dict()
+    for (key, val) in mapping
+      inverse_mapping[val] = key
+    end
+    scores[rnode] = match_scores(rgraph, lgraph, inverse_mapping, rnode)
     if eccentricity(scores[rnode]) < theta
       continue
     end
@@ -121,15 +124,15 @@ function propagation_step_test()
   lgraph = make_lgraph()
   rgraph = make_rgraph()
   mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
-  println(propagation_step(lgraph, rgraph, mapping))
+  for _ in 1:100
+    mapping = propagation_step(lgraph, rgraph, mapping)
+  end
+  println(mapping)
 end
 
 function match_scores(lgraph, rgraph, mapping, lnode)
-  #this is not congruent with the pseudocode given
-  scores = Dict()
-  for rnode in vertices(rgraph)
-    scores[rnode] = 0
-  end
+  #must turn into array
+  scores = zeros(num_vertices(rgraph))
   for ledge in edges(lgraph)
     lnbr = source(ledge, lgraph)
     lnode = target(ledge, lgraph)
@@ -146,8 +149,8 @@ function match_scores(lgraph, rgraph, mapping, lnode)
       #if rnode in mapping.image
       #  continue
       #end
-      scores[rnode] += 1.0 / (in_degree(rnode, rgraph) ^ 0.5)
-      scores[rnode] += 1.0 / (out_degree(rnode, rgraph) ^ 0.5)
+      scores[rnode] += 1.0 / ((in_degree(rnode, rgraph) ^ 0.5) + 0.01)
+      scores[rnode] += 1.0 / ((out_degree(rnode, rgraph) ^ 0.5) + 0.01)
     end
   end
   scores
@@ -194,8 +197,18 @@ function match_scores_test()
 end
 
 function eccentricity(items)
+  curr_max = 0
+  curr_max2 = 0
+  for item in items
+    if item > curr_max
+      curr_max2 = curr_max
+      curr_max = item
+    elseif item > curr_max2
+      curr_max2 = item
+    end
+  end
   #use select!
-  return (max(items) - max2(items)) / std(items)
+  return (curr_max - curr_max2) / std(items)
 end
 
 function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
