@@ -107,20 +107,16 @@ function propagation_step(lgraph, rgraph, mapping)
   for lnode in vertices(lgraph)
     scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
-      #println("theta1")
-      #println(eccentricity(scores[lnode]))
       continue
     end
     rnode = indmax(scores[lnode])
     inv_map = inverse_mapping(mapping)
     scores[rnode] = match_scores(rgraph, lgraph, inv_map, rnode)
     if eccentricity(scores[rnode]) < theta
-      #println("theta2")
       continue
     end
     reverse_match = indmax(scores[rnode])
     if reverse_match != lnode
-      #println("theta3")
       continue
     end
     mapping[lnode] = rnode
@@ -128,10 +124,14 @@ function propagation_step(lgraph, rgraph, mapping)
   mapping
 end
 
+function get_seed_map(rgraph, lgraph)
+  mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
+end
+
 function propagation_step_test()
   lgraph = make_lgraph()
   rgraph = make_rgraph()
-  mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
+  mapping = get_seed_map(rgraph, lgraph)
   for _ in 1:100
     mapping = propagation_step(lgraph, rgraph, mapping)
   end
@@ -195,7 +195,7 @@ function match_scores_test()
   #mapping should be 1=>5, 2=>4, etc
   lgraph = make_lgraph()
   rgraph = make_rgraph()
-  mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
+  mapping = get_seed_map(rgraph, lgraph)
   scores = match_scores(lgraph, rgraph, mapping, 1)
   println(scores)
   #@assert match_scores == something_else
@@ -217,10 +217,13 @@ function eccentricity(items)
 end
 
 function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
+  println("propgation beginning...")
+  curr_map = seed_map
   for i in 1:num_iters
-    propagation_step(tgt_g, aux_g, seed_map) #must mutate seed_map
+    curr_map = propagation_step(tgt_g, aux_g, curr_map) #must mutate seed_map
+    println(i)
   end
-  seed_map
+  curr_map
 end
 
 function test()
@@ -228,8 +231,8 @@ function test()
   propagation_step_test()
 end
 
-test()
+#test()
 
-#turb_g = read_edgelist("turb.edgelist")
-#word_g = read_edgelist("words.edgelist")
-#sa(turb_g, word_g)
+turb_g = read_edgelist("turb.edgelist")
+word_g = read_edgelist("words.edgelist")
+println(propagation(turb_g, word_g, get_seed_map(turb_g, word_g)))
