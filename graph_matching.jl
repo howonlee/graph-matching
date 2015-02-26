@@ -140,12 +140,44 @@ function match_scores(lgraph, rgraph, mapping, lnode)
   scores
 end
 
+function make_match_lgraph()
+  lgraph = simple_graph(5, is_directed=true)
+  add_edge!(lgraph, 1, 2)
+  add_edge!(lgraph, 1, 3)
+  add_edge!(lgraph, 1, 4)
+  add_edge!(lgraph, 1, 5)
+  add_edge!(lgraph, 2, 3)
+  add_edge!(lgraph, 2, 4)
+  add_edge!(lgraph, 2, 5)
+  add_edge!(lgraph, 3, 4)
+  add_edge!(lgraph, 3, 5)
+  add_edge!(lgraph, 4, 5)
+  lgraph
+end
+
+function make_match_rgraph()
+  rgraph = simple_graph(5, is_directed=true)
+  add_edge!(rgraph, 5, 1)
+  add_edge!(rgraph, 5, 2)
+  add_edge!(rgraph, 5, 3)
+  add_edge!(rgraph, 5, 4)
+  add_edge!(rgraph, 4, 1)
+  add_edge!(rgraph, 4, 2)
+  add_edge!(rgraph, 4, 3)
+  add_edge!(rgraph, 3, 1)
+  add_edge!(rgraph, 3, 2)
+  add_edge!(rgraph, 2, 1)
+  rgraph
+end
+
 function match_scores_test()
-  lgraph = 0 #graph with well-defined degree neighborhoods
-  rgraph = 0 #graph with shuffled but same degree neighborhood
-  mapping = {} #one-thing mapping
-  lnode = 0 #some node
-  @assert match_scores == something_else
+  #mapping should be 1=>5, 2=>4, etc
+  lgraph = make_match_lgraph()
+  rgraph = make_match_rgraph()
+  mapping = {highdeg_nodes(lgraph, 1)[1] => highdeg_nodes(rgraph, 1)[1]}
+  scores = match_scores(lgraph, rgraph, mapping, 1)
+  println(scores)
+  #@assert match_scores == something_else
 end
 
 function eccentricity(items)
