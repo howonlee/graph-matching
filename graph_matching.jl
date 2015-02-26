@@ -122,8 +122,10 @@ end
 
 function match_scores(lgraph, rgraph, mapping, lnode)
   #this is not congruent with the pseudocode given
-  scores = [0 for rnode in rgraph.nodes]
-  for (lnbr, lnode) in edges(lgraph)
+  #=
+  scores = [0 for rnode in num_vertices(rgraph)]
+  for edge in edges(lgraph)
+    println(edge)[1]
     if lnbr not in mapping
       continue
     end
@@ -137,6 +139,7 @@ function match_scores(lgraph, rgraph, mapping, lnode)
       scores[rnode] += 1 / (rnode.out_degree ^ 0.5)
     end
   end
+  =#
   scores
 end
 
