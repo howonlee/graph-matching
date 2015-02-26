@@ -7,7 +7,7 @@ using Graphs
 using Base.Collections
 using Base.Test
 
-const theta = 0.5
+const theta = 0.25
 
 function read_edgelist(fname)
   max_vnum = -1
@@ -94,27 +94,35 @@ function weight_matrix_test()
   @test_approx_eq cos_mat true_mat
 end
 
+function inverse_mapping(mapping)
+  inverted = Dict()
+  for (key, val) in mapping
+    inverted[val] = key
+  end
+  inverted
+end
+
 function propagation_step(lgraph, rgraph, mapping)
   scores = (Int => Array{Float64})[]
   for lnode in vertices(lgraph)
     scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
+      #println("theta1")
+      #println(eccentricity(scores[lnode]))
       continue
     end
     rnode = indmax(scores[lnode])
-    inverse_mapping = Dict()
-    for (key, val) in mapping
-      inverse_mapping[val] = key
-    end
-    scores[rnode] = match_scores(rgraph, lgraph, inverse_mapping, rnode)
+    inv_map = inverse_mapping(mapping)
+    scores[rnode] = match_scores(rgraph, lgraph, inv_map, rnode)
     if eccentricity(scores[rnode]) < theta
+      #println("theta2")
       continue
     end
     reverse_match = indmax(scores[rnode])
     if reverse_match != lnode
+      #println("theta3")
       continue
     end
-
     mapping[lnode] = rnode
   end
   mapping
@@ -123,7 +131,7 @@ end
 function propagation_step_test()
   lgraph = make_lgraph()
   rgraph = make_rgraph()
-  mapping = {highdeg_nodes(lgraph, 1)[1] => highdeg_nodes(rgraph, 1)[1]}
+  mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
   for _ in 1:100
     mapping = propagation_step(lgraph, rgraph, mapping)
   end
@@ -131,7 +139,6 @@ function propagation_step_test()
 end
 
 function match_scores(lgraph, rgraph, mapping, lnode)
-  #must turn into array
   scores = zeros(num_vertices(rgraph))
   for ledge in edges(lgraph)
     lnbr = source(ledge, lgraph)
@@ -143,14 +150,12 @@ function match_scores(lgraph, rgraph, mapping, lnode)
     for redge in edges(rgraph)
       rnbr = source(redge, rgraph)
       rnode = target(redge, rgraph)
-      #is this necessary?
-      #... yes it is
-
-      #if rnode in mapping.image
-      #  continue
-      #end
+      inv_map = inverse_mapping(mapping)
+      if haskey(inv_map, rnode)
+        continue
+      end
       scores[rnode] += 1.0 / ((in_degree(rnode, rgraph) ^ 0.5) + 0.01)
-      scores[rnode] += 1.0 / ((out_degree(rnode, rgraph) ^ 0.5) + 0.01)
+      #scores[rnode] += 1.0 / ((out_degree(rnode, rgraph) ^ 0.5) + 0.01)
     end
   end
   scores
@@ -190,7 +195,7 @@ function match_scores_test()
   #mapping should be 1=>5, 2=>4, etc
   lgraph = make_lgraph()
   rgraph = make_rgraph()
-  mapping = {highdeg_nodes(lgraph, 1)[1] => highdeg_nodes(rgraph, 1)[1]}
+  mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
   scores = match_scores(lgraph, rgraph, mapping, 1)
   println(scores)
   #@assert match_scores == something_else
