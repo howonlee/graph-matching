@@ -122,24 +122,29 @@ end
 
 function match_scores(lgraph, rgraph, mapping, lnode)
   #this is not congruent with the pseudocode given
-  #=
-  scores = [0 for rnode in num_vertices(rgraph)]
-  for edge in edges(lgraph)
-    println(edge)[1]
-    if lnbr not in mapping
+  scores = Dict()
+  for rnode in vertices(rgraph)
+    scores[rnode] = 0
+  end
+  for ledge in edges(lgraph)
+    lnbr = source(ledge, lgraph)
+    lnode = target(ledge, lgraph)
+    if !haskey(mapping, lnbr)
       continue
     end
     rnbr = mapping[lnbr]
-    for (rnbr, rnode) in edges(rgraph)
-      if rnode in mapping.image
-        continue
-      end
+    for redge in edges(rgraph)
+      rnbr = source(redge, rgraph)
+      rnode = target(redge, rgraph)
+      #is this necessary?
+      #if rnode in mapping.image
+      #  continue
+      #end
       #the histogram is the same, but not the distribution
-      scores[rnode] += 1 / (rnode.in_degree ^ 0.5)
-      scores[rnode] += 1 / (rnode.out_degree ^ 0.5)
+      scores[rnode] += 1.0 / (in_degree(rnode, rgraph) ^ 0.5)
+      scores[rnode] += 1.0 / (out_degree(rnode, rgraph) ^ 0.5)
     end
   end
-  =#
   scores
 end
 
@@ -177,7 +182,7 @@ function match_scores_test()
   #mapping should be 1=>5, 2=>4, etc
   lgraph = make_match_lgraph()
   rgraph = make_match_rgraph()
-  mapping = {highdeg_nodes(lgraph, 1)[1] => highdeg_nodes(rgraph, 1)[1]}
+  mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
   scores = match_scores(lgraph, rgraph, mapping, 1)
   println(scores)
   #@assert match_scores == something_else
