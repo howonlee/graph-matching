@@ -106,7 +106,6 @@ function propagation_step(lgraph, rgraph, mapping)
   scores = (Int => Array{Float64})[]
   #is all of this computation necessary?
   for lnode in vertices(lgraph)
-    println(lnode)
     scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
       continue
@@ -236,6 +235,9 @@ end
 
 #test()
 
-turb_g = read_edgelist("turb.edgelist")
-word_g = read_edgelist("words.edgelist")
-println(propagation(turb_g, word_g, get_seed_map(turb_g, word_g)))
+#turb_g = read_edgelist("turb.edgelist")
+#word_g = read_edgelist("words.edgelist")
+#need different graphs I think
+g_1 = read_edgelist("gen_graph1")
+g_2 = read_edgelist("gen_graph2")
+println(propagation(g_1, g_2, get_seed_map(g_1, g_2)))
