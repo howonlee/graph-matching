@@ -118,6 +118,10 @@ function propagation_step(lgraph, rgraph, mapping)
 end
 
 function propagation_step_test()
+  lgraph = make_lgraph()
+  rgraph = make_rgraph()
+  mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
+  println(propagation_step(lgraph, rgraph, mapping))
 end
 
 function match_scores(lgraph, rgraph, mapping, lnode)
@@ -137,10 +141,11 @@ function match_scores(lgraph, rgraph, mapping, lnode)
       rnbr = source(redge, rgraph)
       rnode = target(redge, rgraph)
       #is this necessary?
+      #... yes it is
+
       #if rnode in mapping.image
       #  continue
       #end
-      #the histogram is the same, but not the distribution
       scores[rnode] += 1.0 / (in_degree(rnode, rgraph) ^ 0.5)
       scores[rnode] += 1.0 / (out_degree(rnode, rgraph) ^ 0.5)
     end
@@ -148,7 +153,7 @@ function match_scores(lgraph, rgraph, mapping, lnode)
   scores
 end
 
-function make_match_lgraph()
+function make_lgraph()
   lgraph = simple_graph(5, is_directed=true)
   add_edge!(lgraph, 1, 2)
   add_edge!(lgraph, 1, 3)
@@ -163,7 +168,7 @@ function make_match_lgraph()
   lgraph
 end
 
-function make_match_rgraph()
+function make_rgraph()
   rgraph = simple_graph(5, is_directed=true)
   add_edge!(rgraph, 5, 1)
   add_edge!(rgraph, 5, 2)
@@ -180,8 +185,8 @@ end
 
 function match_scores_test()
   #mapping should be 1=>5, 2=>4, etc
-  lgraph = make_match_lgraph()
-  rgraph = make_match_rgraph()
+  lgraph = make_lgraph()
+  rgraph = make_rgraph()
   mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
   scores = match_scores(lgraph, rgraph, mapping, 1)
   println(scores)
@@ -201,8 +206,8 @@ function propagation(tgt_g, aux_g, seed_map, num_iters=10000)
 end
 
 function test()
-  match_scores_test()
-  #propagation_step_test()
+  #match_scores_test()
+  propagation_step_test()
 end
 
 test()
