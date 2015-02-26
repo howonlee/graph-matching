@@ -104,7 +104,9 @@ end
 
 function propagation_step(lgraph, rgraph, mapping)
   scores = (Int => Array{Float64})[]
+  #is all of this computation necessary?
   for lnode in vertices(lgraph)
+    println(lnode)
     scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
       continue
@@ -139,9 +141,9 @@ function propagation_step_test()
 end
 
 function match_scores(lgraph, rgraph, mapping, lnode)
+  #caching the scores??
   scores = zeros(num_vertices(rgraph))
   inv_map = inverse_mapping(mapping)
-  println("first")
   for ledge in edges(lgraph)
     lnbr = source(ledge, lgraph)
     lnode = target(ledge, lgraph)
@@ -159,7 +161,6 @@ function match_scores(lgraph, rgraph, mapping, lnode)
       #scores[rnode] += 1.0 / ((out_degree(rnode, rgraph) ^ 0.5) + 0.01)
     end
   end
-  println("last")
   scores
 end
 
@@ -219,7 +220,7 @@ function eccentricity(items)
 end
 
 function propagation(tgt_g, aux_g, seed_map, num_iters=100)
-  println("propgation beginning...")
+  println("propagation beginning...")
   curr_map = seed_map
   for i in 1:num_iters
     curr_map = propagation_step(tgt_g, aux_g, curr_map) #must mutate seed_map
