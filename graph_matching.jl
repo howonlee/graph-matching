@@ -107,15 +107,15 @@ function propagation_step(lgraph, rgraph, mapping)
   #is all of this computation necessary?
   for lnode in vertices(lgraph)
     scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
-    if eccentricity(scores[lnode]) < theta
-      continue
-    end
+    #if eccentricity(scores[lnode]) < theta
+    #  continue
+    #end
     rnode = indmax(scores[lnode])
     inv_map = inverse_mapping(mapping)
     scores[rnode] = match_scores(rgraph, lgraph, inv_map, rnode)
-    if eccentricity(scores[rnode]) < theta
-      continue
-    end
+    #if eccentricity(scores[rnode]) < theta
+    #  continue
+    #end
     reverse_match = indmax(scores[rnode])
     if reverse_match != lnode
       continue
@@ -235,9 +235,9 @@ end
 
 #test()
 
-#turb_g = read_edgelist("turb.edgelist")
-#word_g = read_edgelist("words.edgelist")
+turb_g = read_edgelist("turb.edgelist")
+word_g = read_edgelist("words.edgelist")
 #need different graphs I think
-g_1 = read_edgelist("gen_graph1")
-g_2 = read_edgelist("gen_graph2")
-println(propagation(g_1, g_2, get_seed_map(g_1, g_2)))
+#g_1 = read_edgelist("gen_graph1")
+#g_2 = read_edgelist("gen_graph2")
+println(propagation(turb_g, word_g, get_seed_map(turb_g, word_g)))
