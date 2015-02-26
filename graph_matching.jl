@@ -123,7 +123,7 @@ end
 function propagation_step_test()
   lgraph = make_lgraph()
   rgraph = make_rgraph()
-  mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
+  mapping = {highdeg_nodes(lgraph, 1)[1] => highdeg_nodes(rgraph, 1)[1]}
   for _ in 1:100
     mapping = propagation_step(lgraph, rgraph, mapping)
   end
@@ -190,7 +190,7 @@ function match_scores_test()
   #mapping should be 1=>5, 2=>4, etc
   lgraph = make_lgraph()
   rgraph = make_rgraph()
-  mapping = {highdeg_nodes(rgraph, 1)[1] => highdeg_nodes(lgraph, 1)[1]}
+  mapping = {highdeg_nodes(lgraph, 1)[1] => highdeg_nodes(rgraph, 1)[1]}
   scores = match_scores(lgraph, rgraph, mapping, 1)
   println(scores)
   #@assert match_scores == something_else
