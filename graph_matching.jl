@@ -108,22 +108,16 @@ function propagation_step(lgraph, rgraph, mapping)
   for lnode in vertices(lgraph)
     scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
-      #println(sort(scores[lnode]))
       continue
     end
     rnode = indmax(scores[lnode])
     inv_map = inverse_mapping(mapping)
     scores[rnode] = match_scores(rgraph, lgraph, inv_map, rnode)
     if eccentricity(scores[rnode]) < theta
-      #println(eccentricity(scores[rnode]))
-      #println(theta)
-      #println(sort(scores[rnode]))
-      #println("walla2")
       continue
     end
     reverse_match = indmax(scores[rnode])
     if reverse_match != lnode
-      #println("walla3")
       continue
     end
     mapping[lnode] = rnode
