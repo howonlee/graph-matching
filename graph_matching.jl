@@ -7,7 +7,7 @@ using Graphs
 using Base.Collections
 using Base.Test
 
-const theta = 0.25
+const theta = 0.1
 
 function read_edgelist(fname)
   max_vnum = -1
@@ -108,16 +108,22 @@ function propagation_step(lgraph, rgraph, mapping)
   for lnode in vertices(lgraph)
     scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
     if eccentricity(scores[lnode]) < theta
+      #println(sort(scores[lnode]))
       continue
     end
     rnode = indmax(scores[lnode])
     inv_map = inverse_mapping(mapping)
     scores[rnode] = match_scores(rgraph, lgraph, inv_map, rnode)
     if eccentricity(scores[rnode]) < theta
+      #println(eccentricity(scores[rnode]))
+      #println(theta)
+      #println(sort(scores[rnode]))
+      #println("walla2")
       continue
     end
     reverse_match = indmax(scores[rnode])
     if reverse_match != lnode
+      #println("walla3")
       continue
     end
     mapping[lnode] = rnode
@@ -210,7 +216,7 @@ function eccentricity(items)
     if item > curr_max
       curr_max2 = curr_max
       curr_max = item
-    elseif item > curr_max2
+    elseif item > curr_max2 && item < curr_max - 0.001
       curr_max2 = item
     end
   end
