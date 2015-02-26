@@ -140,7 +140,7 @@ function propagation_step_test()
 end
 
 function match_scores(lgraph, rgraph, mapping, lnode)
-  #caching the scores??
+  #if we continue on in this, must cache the degree counts
   scores = zeros(num_vertices(rgraph))
   inv_map = inverse_mapping(mapping)
   for ledge in edges(lgraph)
