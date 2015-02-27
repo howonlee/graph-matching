@@ -17,7 +17,7 @@ def degree_neighborhoods(net, degree_dict):
         for neigh in net.neighbors_iter(node):
             neighbor_dict[node].append(degree_dict[neigh])
         neighbor_dict[node].sort() #mutating sort
-        #neighbor_dict[node] = sum(neighbor_dict[node])
+        #neighbor_dict[node] = len(neighbor_dict[node])
     return neighbor_dict
 
 def load_word_mapping(name, rev=True):
@@ -34,14 +34,17 @@ if __name__ == "__main__":
     net2 = nx.read_edgelist("./second_net.edgelist")
     deg1 = degrees(net1)
     deg2 = degrees(net2)
-    deg_neigh1 = sorted(degree_neighborhoods(net1, deg1).items(), key=operator.itemgetter(1))
-    deg_neigh2 = sorted(degree_neighborhoods(net2, deg2).items(), key=operator.itemgetter(1))
+    deg_neigh1 = reversed(sorted(degree_neighborhoods(net1, deg1).items(), key=operator.itemgetter(1)))
+    deg_neigh2 = reversed(sorted(degree_neighborhoods(net2, deg2).items(), key=operator.itemgetter(1)))
     mapping_1 = load_word_mapping("first_dict.pickle")
     mapping_2 = load_word_mapping("second_dict.pickle")
     sample_1 = map(lambda x: mapping_1[int(x[0])], deg_neigh1)
     sample_2 = map(lambda x: mapping_2[int(x[0])], deg_neigh2)
     samples = zip(sample_1, sample_2)
-    print samples[:100]
+    samples = samples[:400]
+    for member in samples:
+        print "%10s\t%10s" % member
+    #print samples[:100]
     #filtered_samples = filter(lambda x: x[0] == x[1], samples)
     #print filtered_samples
     #print len(filtered_samples)
