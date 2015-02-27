@@ -29,21 +29,30 @@ def save_word_mapping(mapping, name):
         cPickle.dump(mapping, map_file)
     print "word mapping dumped to : ", name
 
-def word_graph(words, mapping):
+def word_net(words, mapping):
     bigs = get_bigrams(words)
     edge_list = map(lambda x: (mapping[x[0]], mapping[x[1]]), bigs)
     net = nx.Graph()
     for edge in edge_list:
-        net.add_edge(edge)
+        net.add_edge(*edge)
     return net
 
-def store_word_graph(net, name):
-    nx.save_edgelist(net, name)
-    print "word graph stored to : ", name
+def save_word_net(net, name):
+    nx.write_edgelist(net, name, data=False)
+    print "word graph saved to : ", name
 
 if __name__ == "__main__":
     brown_words = brown.words()
-    brown_length = len(brown_words)
+    brown_length = len(brown_words) // 2
     first, second = brown_words[brown_length:], brown_words[:brown_length]
-    word_dict = word_mapping(brown_words)
-    word_net = word_net(words, mapping)
+    first_dict = word_mapping(first)
+    first_net = word_net(first, first_dict)
+    second_dict = word_mapping(second)
+    second_net = word_net(second, second_dict)
+    print "generated. saving...."
+
+    save_word_mapping(first_dict, "first_dict.pickle")
+    save_word_net(first_net, "first_net.edgelist")
+
+    save_word_mapping(second_dict, "second_dict.pickle")
+    save_word_net(second_net, "second_net.edgelist")
