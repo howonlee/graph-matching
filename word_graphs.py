@@ -24,14 +24,17 @@ def word_mapping(words):
 def get_bigrams(ls):
     return zip(ls, ls[1:])
 
-def save_word_mapping():
-    pass
+def save_word_mapping(mapping, name):
+    with open(name, "w") as map_file:
+        cPickle.dump(mapping, map_file)
+    print "dumped to : ", name
 
-def store_word_graph():
+def word_graph(words, mapping, name):
     #store the word graph
     pass
 
-def s
+def store_word_graph(net):
+    pass
 
 if __name__ == "__main__":
     brown_words = brown.words()
