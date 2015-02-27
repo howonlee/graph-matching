@@ -30,7 +30,12 @@ def save_word_mapping(mapping, name):
     print "word mapping dumped to : ", name
 
 def word_graph(words, mapping):
-    pass
+    bigs = get_bigrams(words)
+    edge_list = map(lambda x: (mapping[x[0]], mapping[x[1]]), bigs)
+    net = nx.Graph()
+    for edge in edge_list:
+        net.add_edge(edge)
+    return net
 
 def store_word_graph(net, name):
     nx.save_edgelist(net, name)
@@ -42,4 +47,3 @@ if __name__ == "__main__":
     first, second = brown_words[brown_length:], brown_words[:brown_length]
     word_dict = word_mapping(brown_words)
     word_net = word_net(words, mapping)
-    #print sorted(word_dict.items(), key=operator.itemgetter(1))[:1000]
