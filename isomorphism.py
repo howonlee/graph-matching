@@ -17,14 +17,6 @@ def degree_neighborhoods(net, degree_dict):
         #neighbor_dict[node] = ",".join(map(str, neighbor_dict[node]))
     return neighbor_dict
 
-def lexicographical_form(neighbor_list):
-    #specific goal exists for this one.
-    #we want that if two nodes are in the same position in the listing
-    #they should be a close match
-    #and then a distance measure should be put forth
-    #we considered carefully a cosine distance or something
-    pass
-
 if __name__ == "__main__":
     net1 = nx.read_edgelist("./gen_graph1")
     net2 = nx.read_edgelist("./gen_graph2")
