@@ -18,8 +18,8 @@ def degree_neighborhoods(net, degree_dict):
     return neighbor_dict
 
 if __name__ == "__main__":
-    net1 = nx.read_edgelist("./gen_graph1")
-    net2 = nx.read_edgelist("./gen_graph2")
+    net1 = nx.read_edgelist("./first_net.edgelist")
+    net2 = nx.read_edgelist("./second_net.edgelist")
     deg1 = degrees(net1)
     deg2 = degrees(net2)
     deg_neigh1 = sorted(degree_neighborhoods(net1, deg1).items(), key=operator.itemgetter(1))
