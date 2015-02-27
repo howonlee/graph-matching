@@ -1,6 +1,9 @@
-import brown #import it from nltk
+from nltk.corpus import brown
+first = brown.words()[580596:]
+second = brown.words()[:580596]
 
-#put in the words
-#split into two lengthwise exactly
-#save into two graph edge files, separately
-#save the correspondenses between node ids and words, separately
+def bigrams(ls):
+    return zip(ls, ls[1:])
+
+first_bi = bigrams(first)
+print first_bi[:1000]
