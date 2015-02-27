@@ -27,14 +27,13 @@ def get_bigrams(ls):
 def save_word_mapping(mapping, name):
     with open(name, "w") as map_file:
         cPickle.dump(mapping, map_file)
-    print "dumped to : ", name
+    print "word mapping dumped to : ", name
 
-def word_graph(words, mapping, name):
-    #store the word graph
-    pass
-
-def store_word_graph(net):
-    pass
+def store_word_graph(words, mapping, name):
+    #do it with nx
+    #net = something something sometihng
+    nx.save_edgelist(net, name)
+    print "word graph stored to : ", name
 
 if __name__ == "__main__":
     brown_words = brown.words()
