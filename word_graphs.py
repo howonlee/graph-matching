@@ -29,15 +29,17 @@ def save_word_mapping(mapping, name):
         cPickle.dump(mapping, map_file)
     print "word mapping dumped to : ", name
 
-def store_word_graph(words, mapping, name):
-    #do it with nx
-    #net = something something sometihng
+def word_graph(words, mapping):
+    pass
+
+def store_word_graph(net, name):
     nx.save_edgelist(net, name)
     print "word graph stored to : ", name
 
 if __name__ == "__main__":
     brown_words = brown.words()
-    print len(brown_words), " words"
-    bigrams = get_bigrams(brown_words)
+    brown_length = len(brown_words)
+    first, second = brown_words[brown_length:], brown_words[:brown_length]
     word_dict = word_mapping(brown_words)
+    word_net = word_net(words, mapping)
     #print sorted(word_dict.items(), key=operator.itemgetter(1))[:1000]
