@@ -1,5 +1,6 @@
 import networkx as nx
 import operator
+import cPickle
 
 def degrees(net):
     degree_dict = {}
@@ -9,13 +10,22 @@ def degrees(net):
 
 def degree_neighborhoods(net, degree_dict):
     neighbor_dict = {}
+    #really need a better sort of distance, I think
     for node in net.nodes_iter():
         neighbor_dict[node] = []
         for neigh in net.neighbors_iter(node):
             neighbor_dict[node].append(degree_dict[neigh])
         neighbor_dict[node].sort() #mutating sort
-        #neighbor_dict[node] = ",".join(map(str, neighbor_dict[node]))
+        neighbor_dict[node] = ",".join(map(str, neighbor_dict[node]))
     return neighbor_dict
+
+def load_word_mapping(name, rev=True):
+    mapping = {}
+    with open(name, "rb") as pickle_file:
+        mapping = cPickle.load(pickle_file)
+    if rev:
+        mapping = {v: k for k, v in mapping.iteritems()}
+    return mapping
 
 if __name__ == "__main__":
     net1 = nx.read_edgelist("./first_net.edgelist")
@@ -24,4 +34,9 @@ if __name__ == "__main__":
     deg2 = degrees(net2)
     deg_neigh1 = sorted(degree_neighborhoods(net1, deg1).items(), key=operator.itemgetter(1))
     deg_neigh2 = sorted(degree_neighborhoods(net2, deg2).items(), key=operator.itemgetter(1))
-    print deg_neigh1
+    mapping_1 = load_word_mapping("first_dict.pickle")
+    mapping_2 = load_word_mapping("second_dict.pickle")
+    sample_1 = map(lambda x: mapping_1[int(x[0])], deg_neigh1[:1000])
+    sample_2 = map(lambda x: mapping_2[int(x[0])], deg_neigh2[:1000])
+    samples = zip(sample_1, sample_2)
+    print samples
