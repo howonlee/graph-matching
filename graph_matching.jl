@@ -225,8 +225,8 @@ function indegree_cache(graph)
   cache
 end
 
-function propagation(tgt_g, aux_g, seed_map, num_iters=100)
-  curr_map = seed_map
+function propagation(tgt_g, aux_g, num_iters=100)
+  curr_map = get_seed_map(tgt_g, aux_g)
   l_indegs = indegree_cache(tgt_g)
   r_indegs = indegree_cache(aux_g)
   for i in 1:num_iters
@@ -244,10 +244,8 @@ end
 #test()
 
 #turb_g = read_edgelist("turb.edgelist")
-#word_g = read_edgelist("words.edgelist")
-#need different graphs I think
-g_1 = read_edgelist("gen_graph1")
-g_2 = read_edgelist("gen_graph2")
-prop_res = propagation(g_1, g_2, get_seed_map(g_1, g_2))
+#g_1 = read_edgelist("gen_graph1")
+#g_2 = read_edgelist("gen_graph2")
+prop_res = propagation(g_1, g_2)
 dict_file = open("prop_result.jld", "w")
 serialize(dict_file, prop_res)
