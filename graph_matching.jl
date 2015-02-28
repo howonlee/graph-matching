@@ -102,17 +102,17 @@ function inverse_mapping(mapping)
   inverted
 end
 
-function propagation_step(lgraph, rgraph, mapping)
+function propagation_step(lgraph, rgraph, mapping, l_indegs, r_indegs)
   scores = (Int => Array{Float64})[]
   #is all of this computation necessary?
   for lnode in vertices(lgraph)
-    scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode)
+    scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode, r_indegs)
     #if eccentricity(scores[lnode]) < theta
     #  continue
     #end
     rnode = indmax(scores[lnode])
     inv_map = inverse_mapping(mapping)
-    scores[rnode] = match_scores(rgraph, lgraph, inv_map, rnode)
+    scores[rnode] = match_scores(rgraph, lgraph, inv_map, rnode, l_indegs)
     #if eccentricity(scores[rnode]) < theta
     #  continue
     #end
@@ -139,8 +139,7 @@ function propagation_step_test()
   println(mapping)
 end
 
-function match_scores(lgraph, rgraph, mapping, lnode)
-  #if we continue on in this, must cache the degree counts
+function match_scores(lgraph, rgraph, mapping, lnode, indeg_cache)
   scores = zeros(num_vertices(rgraph))
   inv_map = inverse_mapping(mapping)
   for ledge in edges(lgraph)
@@ -156,7 +155,7 @@ function match_scores(lgraph, rgraph, mapping, lnode)
       if haskey(inv_map, rnode)
         continue
       end
-      scores[rnode] += 1.0 / ((in_degree(rnode, rgraph) ^ 0.5) + 0.01)
+      scores[rnode] += 1.0 / ((indeg_cache[rnode] ^ 0.5) + 0.01)
       #scores[rnode] += 1.0 / ((out_degree(rnode, rgraph) ^ 0.5) + 0.01)
     end
   end
@@ -218,11 +217,15 @@ function eccentricity(items)
   return (curr_max - curr_max2) / std(items)
 end
 
+function indegree_cache(graph)
+  #
+end
+
 function propagation(tgt_g, aux_g, seed_map, num_iters=100)
-  println("propagation beginning...")
   curr_map = seed_map
+  #make the indegree caches
   for i in 1:num_iters
-    curr_map = propagation_step(tgt_g, aux_g, curr_map) #must mutate seed_map
+    curr_map = propagation_step(tgt_g, aux_g, curr_map, l_indegs, r_indegs) #must mutate seed_map
     println(i)
   end
   curr_map
