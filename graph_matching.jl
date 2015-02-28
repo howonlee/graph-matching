@@ -218,11 +218,11 @@ function eccentricity(items)
 end
 
 function indegree_cache(graph)
-  #
-  #
-  #
-  #
-  #
+  cache = Dict()
+  for v in vertices(graph)
+    cache[v] = in_degree(v, graph)
+  end
+  cache
 end
 
 function propagation(tgt_g, aux_g, seed_map, num_iters=100)
