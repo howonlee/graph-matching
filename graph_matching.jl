@@ -219,11 +219,16 @@ end
 
 function indegree_cache(graph)
   #
+  #
+  #
+  #
+  #
 end
 
 function propagation(tgt_g, aux_g, seed_map, num_iters=100)
   curr_map = seed_map
-  #make the indegree caches
+  l_indegs = indegree_cache(tgt_g)
+  r_indegs = indegree_cache(aux_g)
   for i in 1:num_iters
     curr_map = propagation_step(tgt_g, aux_g, curr_map, l_indegs, r_indegs) #must mutate seed_map
     println(i)
@@ -238,9 +243,9 @@ end
 
 #test()
 
-turb_g = read_edgelist("turb.edgelist")
-word_g = read_edgelist("words.edgelist")
+#turb_g = read_edgelist("turb.edgelist")
+#word_g = read_edgelist("words.edgelist")
 #need different graphs I think
-#g_1 = read_edgelist("gen_graph1")
-#g_2 = read_edgelist("gen_graph2")
-println(propagation(turb_g, word_g, get_seed_map(turb_g, word_g)))
+g_1 = read_edgelist("gen_graph1")
+g_2 = read_edgelist("gen_graph2")
+println(propagation(g_1, g_2, get_seed_map(g_1, g_2)))
