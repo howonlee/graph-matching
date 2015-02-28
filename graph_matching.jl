@@ -248,4 +248,6 @@ end
 #need different graphs I think
 g_1 = read_edgelist("gen_graph1")
 g_2 = read_edgelist("gen_graph2")
-println(propagation(g_1, g_2, get_seed_map(g_1, g_2)))
+prop_res = propagation(g_1, g_2, get_seed_map(g_1, g_2))
+dict_file = open("prop_result.jld", "w")
+serialize(dict_file, prop_res)
