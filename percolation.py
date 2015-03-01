@@ -2,7 +2,7 @@ import networkx as nx
 import operator
 
 if __name__ == "__main__":
-    net = nx.read_edgelist("words.edgelist")
+    net = nx.read_edgelist("gen_graph2")
     print type(net)
     print "number nodes in total wordlist: "
     print net.number_of_nodes()
