@@ -107,15 +107,15 @@ function propagation_step(lgraph, rgraph, mapping, l_indegs, r_indegs)
   #is all of this computation necessary?
   for lnode in vertices(lgraph)
     scores[lnode] = match_scores(lgraph, rgraph, mapping, lnode, r_indegs)
-    #if eccentricity(scores[lnode]) < theta
-    #  continue
-    #end
+    if eccentricity(scores[lnode]) < theta
+      continue
+    end
     rnode = indmax(scores[lnode])
     inv_map = inverse_mapping(mapping)
     scores[rnode] = match_scores(rgraph, lgraph, inv_map, rnode, l_indegs)
-    #if eccentricity(scores[rnode]) < theta
-    #  continue
-    #end
+    if eccentricity(scores[rnode]) < theta
+      continue
+    end
     reverse_match = indmax(scores[rnode])
     if reverse_match != lnode
       continue

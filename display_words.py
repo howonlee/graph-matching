@@ -10,7 +10,6 @@ if __name__ == "__main__":
         second_dict = pickle.load(second_file)
     with open("prop_result.json", "r") as match_file:
         match_dict = json.load(match_file)
-    print match_dict
     first_rev = {v: k for (k, v) in first_dict.items()}
     first_rev2 = collections.defaultdict(str)
     for k, v in first_rev.iteritems():
@@ -21,4 +20,7 @@ if __name__ == "__main__":
         second_rev2[k] = v
     match_2 = {int(k):v for (k, v) in match_dict.items()}
     match_3 = {first_rev2[v]:second_rev2[k] for (k, v) in match_2.items()}
-    print match_3
+    for k, v in match_3.iteritems():
+        if k == v:
+            print k, v
+
