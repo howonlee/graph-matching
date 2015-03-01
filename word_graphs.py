@@ -13,7 +13,7 @@ import cPickle
 import random
 
 def word_mapping(words):
-    curr_count = 0
+    curr_count = 1 #in deference to julia structure
     state_map = {}
     for word in words:
         if word not in state_map:
@@ -43,8 +43,7 @@ def save_word_net(net, name):
 
 if __name__ == "__main__":
     brown_words = brown.words()
-    brown_length = len(brown_words) // 2
-    first, second = brown_words[brown_length:], brown_words[:brown_length]
+    first, second = brown_words[10000:10100], brown_words[0:100] #just 2 2000word slices
     first_dict = word_mapping(first)
     first_net = word_net(first, first_dict)
     second_dict = word_mapping(second)

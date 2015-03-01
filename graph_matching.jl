@@ -225,12 +225,13 @@ function indegree_cache(graph)
   cache
 end
 
-function propagation(tgt_g, aux_g, num_iters=100)
+function propagation(tgt_g, aux_g, num_iters=2500)
   curr_map = get_seed_map(tgt_g, aux_g)
   l_indegs = indegree_cache(tgt_g)
   r_indegs = indegree_cache(aux_g)
   for i in 1:num_iters
     curr_map = propagation_step(tgt_g, aux_g, curr_map, l_indegs, r_indegs) #must mutate seed_map
+    println("current iteration: ")
     println(i)
   end
   curr_map
@@ -244,8 +245,8 @@ end
 #test()
 
 #turb_g = read_edgelist("turb.edgelist")
-#g_1 = read_edgelist("gen_graph1")
-#g_2 = read_edgelist("gen_graph2")
+g_1 = read_edgelist("first_net.edgelist")
+g_2 = read_edgelist("second_net.edgelist")
 prop_res = propagation(g_1, g_2)
 dict_file = open("prop_result.jld", "w")
 serialize(dict_file, prop_res)
