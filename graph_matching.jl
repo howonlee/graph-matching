@@ -225,7 +225,7 @@ function indegree_cache(graph)
   cache
 end
 
-function propagation(tgt_g, aux_g, num_iters=2500)
+function propagation(tgt_g, aux_g, num_iters)
   curr_map = get_seed_map(tgt_g, aux_g)
   l_indegs = indegree_cache(tgt_g)
   r_indegs = indegree_cache(aux_g)
@@ -247,6 +247,6 @@ end
 #turb_g = read_edgelist("turb.edgelist")
 g_1 = read_edgelist("first_net.edgelist")
 g_2 = read_edgelist("second_net.edgelist")
-prop_res = propagation(g_1, g_2)
+prop_res = propagation(g_1, g_2, 100)
 dict_file = open("prop_result.jld", "w")
 serialize(dict_file, prop_res)
