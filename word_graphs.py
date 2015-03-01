@@ -43,7 +43,7 @@ def save_word_net(net, name):
 
 if __name__ == "__main__":
     brown_words = brown.words()
-    first, second = brown_words[10000:10100], brown_words[0:100] #just 2 2000word slices
+    first, second = brown_words[10000:10500], brown_words[0:500] #just 2 2000word slices
     first_dict = word_mapping(first)
     first_net = word_net(first, first_dict)
     second_dict = word_mapping(second)

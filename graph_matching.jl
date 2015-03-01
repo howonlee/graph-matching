@@ -247,6 +247,6 @@ end
 #turb_g = read_edgelist("turb.edgelist")
 g_1 = read_edgelist("first_net.edgelist")
 g_2 = read_edgelist("second_net.edgelist")
-prop_res = propagation(g_1, g_2, 100)
+prop_res = propagation(g_1, g_2, 500)
 dict_file = open("prop_result.jld", "w")
 serialize(dict_file, prop_res)
